@@ -1,5 +1,5 @@
 # COVID19-Python
-Extracting COBID19 Data with Python, Pandas and friends
+Extracting COBID19 Data from https://www.worldometers.info/coronavirus/#countries with Python, Pandas and friends
 
 2 scripts are provided:
  - The first document is a Jupyter Notebook to use with Anaconda. You can use it to explore and experiment with the data.
