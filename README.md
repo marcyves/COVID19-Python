@@ -8,3 +8,4 @@ Extracting COBID19 Data with Python, Pandas and friends
  ## Work in progress
  
  ## Sample Output
+![Stats from March 11](figures/COVID19-20200311.png)
