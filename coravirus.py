@@ -4,6 +4,15 @@ import numpy as np
 from datetime import date
 import requests
 
+"""
+    Display COVID-19 WorldWide Evolution
+    ====================================
+
+    (c) Marc Augier - XDM Consulting
+    m.augier@me.com
+
+"""
+
 def autolabel(rects):
     """Attach a text label above each bar in *rects*, displaying its height."""
     for rect in rects:
