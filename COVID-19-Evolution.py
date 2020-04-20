@@ -60,4 +60,28 @@ def autolabel(ax,rects):
 
 if __name__ == "__main__":
     df = pd.read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv").dropna()
-    display(process("France"))
+
+
+    print("Country Graphic Evolution")
+    print("=========================\n")
+
+    while True:
+        print("1 - France")
+        print("2 - Canada")
+        print("3 - Italy")
+        print("\n0 - Quitter\n")
+        n = -1
+
+        while(n<0 or n>3):
+            n = int(input("Votre choix ==> "))
+
+        if n == 0:
+            break
+        elif n == 1:
+            country = "France"
+        elif n == 2:
+            country = "Canada"
+        elif n == 3:
+            country = "Italy"
+
+        display(process(country))
