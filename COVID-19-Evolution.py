@@ -12,7 +12,7 @@ import numpy as np
 """
 def process(country):
     # Get French data
-    df_country = df[df.countriesAndTerritories == 'France']
+    df_country = df[df.countriesAndTerritories == country]
 
     # Retain only date, cases and deaths columns
     df_country = df_country[['dateRep', 'cases', 'deaths']]
@@ -24,7 +24,7 @@ def process(country):
 
     return df_country
 
-def display(df):
+def display(df, country):
     x = np.arange(len(df.dateRep))  # the label are dates
     width = 0.5  # the width of the bars
 
@@ -34,7 +34,7 @@ def display(df):
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
     ax.set_ylabel('Count')
-    ax.set_title('Confirmed Cases and Deaths')
+    ax.set_title('Confirmed Cases and Deaths in {}'.format(country))
     ax.set_xticks(x)
     ax.set_xticklabels(df.dateRep)
     ax.legend()
@@ -84,4 +84,4 @@ if __name__ == "__main__":
         elif n == 3:
             country = "Italy"
 
-        display(process(country))
+        display(process(country), country)
