@@ -11,14 +11,19 @@ import numpy as np
 
 """
 def process(country):
-    # Get French data
+    # Get Country data
     df_country = df[df.countriesAndTerritories == country]
 
     # Retain only date, cases and deaths columns
     df_country = df_country[['dateRep', 'cases', 'deaths']]
 
-    # Calculate cumulative cases & deaths
+    # Make dateRep a Date field to sort it
+    df_country['dateRep'] =pd.to_datetime(df_country.dateRep)
     df_country = df_country.sort_values('dateRep')
+    # remove time
+    df_country['dateRep'] = df_country['dateRep'].dt.date
+
+    # Calculate cumulative cases & deaths
     df_country['cumCases'] = df_country.cases.cumsum()
     df_country['cumDeaths'] = df_country.deaths.cumsum()
 
