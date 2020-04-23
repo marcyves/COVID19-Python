@@ -25,15 +25,17 @@ if __name__ == "__main__":
     df = pd.read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv").dropna()
 
     # Make dateRep a Date field to sort it
-    df['date'] =pd.to_datetime(df.dateRep)
-    df['just_date'] = df['dateRep'].dt.date
+    df['date'] =pd.to_datetime(df.dateRep, format="%d/%m/%Y")
     df = df.sort_values('date')
+    # remove time
+    df['date'] = df['date'].dt.date
 
     # Calculate cumulative cases & deaths
-    df['cumCases']  = df.cases.cumsum()
-    df['cumDeaths'] = df.deaths.cumsum()
+    df['cumCases']  = df.groupby(['countryterritoryCode'])['cases'].apply(lambda x: x.cumsum())
+    df['cumDeaths'] = df.groupby(['countryterritoryCode'])['deaths'].apply(lambda x: x.cumsum())
 
-    df = df.query("countryterritoryCode=='ITA'")
+#    df = df.query("countryterritoryCode=='ITA'")
+    df = df.query("continentExp=='Europe' and cumDeaths > 50 ")
 
     print(df)
     display(df)
