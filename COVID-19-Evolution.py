@@ -59,7 +59,9 @@ def display(df, country):
     x = np.arange(len(df.dateRep))  # the label are dates
 
     plt.scatter(x, df.cumCases, c = 'red')
+    plt.scatter(x, df.cases, c = 'red')
     plt.scatter(x, df.cumDeaths, c = 'blue')
+    plt.scatter(x, df.deaths, c = 'green')
 
     plt.show()
 
@@ -100,3 +102,5 @@ if __name__ == "__main__":
             country = "Italy"
 
         display(process(country), country)
+
+#        display_bar(process(country), country)
