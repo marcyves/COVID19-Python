@@ -15,13 +15,13 @@ def process(country):
     df_country = df[df.countriesAndTerritories == country]
 
     # Retain only date, cases and deaths columns
-    df_country = df_country[['dateRep', 'cases', 'deaths']]
+    # df_country = df_country[['dateRep', 'cases', 'deaths']]
 
     # Make dateRep a Date field to sort it
-    df_country['dateRep'] =pd.to_datetime(df_country.dateRep)
-    df_country = df_country.sort_values('dateRep')
+    df_country['date'] =pd.to_datetime(df_country.dateRep, format="%d/%m/%Y")
+    df_country = df_country.sort_values('date')
     # remove time
-    df_country['dateRep'] = df_country['dateRep'].dt.date
+    df_country['date'] = df_country['date'].dt.date
 
     # Calculate cumulative cases & deaths
     df_country['cumCases'] = df_country.cases.cumsum()
@@ -29,7 +29,7 @@ def process(country):
 
     return df_country
 
-def display(df, country):
+def display_bar(df, country):
     x = np.arange(len(df.dateRep))  # the label are dates
     width = 0.5  # the width of the bars
 
@@ -50,6 +50,16 @@ def display(df, country):
     fig.tight_layout()
 
     plt.xticks(rotation=45)
+
+    plt.show()
+
+def display(df, country):
+    print(df)
+
+    x = np.arange(len(df.dateRep))  # the label are dates
+
+    plt.scatter(x, df.cumCases, c = 'red')
+    plt.scatter(x, df.cumDeaths, c = 'blue')
 
     plt.show()
 
