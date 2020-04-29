@@ -13,8 +13,6 @@ import numpy as np
 def process(country):
     # Get Country data
     df_country = df[df.countriesAndTerritories == country]
-    # Remove values before start
-    df_country = df_country[df_country.cases > 100]
     # Retain only date, cases and deaths columns
     # df_country = df_country[['dateRep', 'cases', 'deaths']]
 
@@ -27,6 +25,12 @@ def process(country):
     # Calculate cumulative cases & deaths
     df_country['cumCases'] = df_country.cases.cumsum()
     df_country['cumDeaths'] = df_country.deaths.cumsum()
+
+    # Remove early values
+    df_country = df_country[df_country.cumCases > 1000]
+
+    # Rolling mean
+    df_country['rollingCases'] = df_country.cases.rolling(window=5,center=False).mean()
 
     return df_country
 
@@ -70,7 +74,7 @@ def display_scatter(df, country):
 
 def display_plot(df, country):
 
-#    print(df)
+    #    print(df)
 
     plt.title('Confirmed Cases and Deaths in {}\nSource: {}'.format(country, source_url))
 
@@ -83,6 +87,7 @@ def display_plot(df, country):
     
     plt.plot(x, df.cumCases, c = 'blue', label='Cumulated Cases')
     plt.plot(x, df.cases, c = 'green', label='Cases')
+    plt.plot(x, df.rollingCases,":", c = 'green', label='Rolling Mean of Cases')
     plt.plot(x, df.cumDeaths, c = 'red', label='Cumulated Deaths')
     plt.plot(x, df.deaths, c = 'orange', label='Deaths')
 
@@ -94,6 +99,7 @@ def display_plot(df, country):
     plt.subplots_adjust(left=0.1, bottom=0.18, right=0.95, top=0.9)
 
     plt.legend()
+    plt.grid(color='gainsboro', linestyle='dashed')
 
     plt.show()
 
