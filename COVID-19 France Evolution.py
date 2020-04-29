@@ -19,7 +19,7 @@ df_fr = df[df.countriesAndTerritories == 'France']
 # Retain only date, cases and deaths columns
 df_fr = df_fr[['dateRep', 'cases', 'deaths']]
 # Make dateRep a Date field to sort it
-df_fr['date'] =pd.to_datetime(df_country.dateRep, format="%d/%m/%Y")
+df_fr['date'] =pd.to_datetime(df_fr.dateRep, format="%d/%m/%Y")
 df_fr['just_date'] = df_fr['dateRep'].dt.date
 df_fr = df_fr.sort_values('date')
 
