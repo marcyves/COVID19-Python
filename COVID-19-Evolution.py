@@ -13,7 +13,8 @@ import numpy as np
 def process(country):
     # Get Country data
     df_country = df[df.countriesAndTerritories == country]
-
+    # Remove values before start
+    df_country = df_country[df_country.cases > 100]
     # Retain only date, cases and deaths columns
     # df_country = df_country[['dateRep', 'cases', 'deaths']]
 
@@ -53,15 +54,46 @@ def display_bar(df, country):
 
     plt.show()
 
-def display(df, country):
-    print(df)
+def display_scatter(df, country):
+
+    plt.title('Confirmed Cases and Deaths in {}'.format(country))
 
     x = np.arange(len(df.dateRep))  # the label are dates
 
-    plt.scatter(x, df.cumCases, c = 'red')
-    plt.scatter(x, df.cases, c = 'red')
-    plt.scatter(x, df.cumDeaths, c = 'blue')
-    plt.scatter(x, df.deaths, c = 'green')
+    plt.scatter(x, df.cumCases, c = 'blue')
+    plt.scatter(x, df.cases, c = 'green')
+    plt.scatter(x, df.cumDeaths, c = 'red')
+    plt.scatter(x, df.deaths, c = 'orange')
+
+    plt.legend()
+    plt.show()
+
+def display_plot(df, country):
+
+#    print(df)
+
+    plt.title('Confirmed Cases and Deaths in {}\nSource: {}'.format(country, source_url))
+
+    x = df.dateRep
+    plt.xticks(rotation=80)
+
+    y_ticks = np.arange(0, df.cumCases.max(), 5000)
+
+    plt.yticks(y_ticks)
+    
+    plt.plot(x, df.cumCases, c = 'blue', label='Cumulated Cases')
+    plt.plot(x, df.cases, c = 'green', label='Cases')
+    plt.plot(x, df.cumDeaths, c = 'red', label='Cumulated Deaths')
+    plt.plot(x, df.deaths, c = 'orange', label='Deaths')
+
+    # draw line of Max Cases
+#    x_cases = [df.date.min(), df.date.max()]
+#    y_cases = [df.cases.max(), df.cases.max()]
+#    plt.plot(x_cases, y_cases)
+
+    plt.subplots_adjust(left=0.1, bottom=0.18, right=0.95, top=0.9)
+
+    plt.legend()
 
     plt.show()
 
@@ -76,7 +108,8 @@ def autolabel(ax,rects):
                     ha='center', va='bottom')
 
 if __name__ == "__main__":
-    df = pd.read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv").dropna()
+    source_url = "https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"
+    df = pd.read_csv(source_url).dropna()
 
 
     print("Country Graphic Evolution")
@@ -101,6 +134,5 @@ if __name__ == "__main__":
         elif n == 3:
             country = "Italy"
 
-        display(process(country), country)
-
+        display_plot(process(country), country)
 #        display_bar(process(country), country)
