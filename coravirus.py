@@ -39,7 +39,9 @@ new_cols = df.columns.values
 new_cols[0] = 'Countries'
 df.columns = new_cols
 
-top50 = df['TotalCases'] > 5000
+df = df.sort_values("TotalDeaths")
+
+top50 = df['TotalDeaths'] > 5000
 low50 = df['TotalCases'] < 1000
 nototal = df['Countries'] != 'Total:'
 noworld = df['Countries'] != 'World'
@@ -53,7 +55,7 @@ rects2 = ax.bar(x + width/3, df[top50 & nototal & noworld].TotalDeaths, width, l
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Count')
-ax.set_title('Confirmed Cases and Deaths by Country')
+ax.set_title('Confirmed Cases and Deaths by Country\nShowing only countries with more than 5.000 deaths')
 ax.set_xticks(x)
 ax.set_xticklabels(df[top50 & nototal & noworld].Countries)
 ax.legend()
