@@ -17,7 +17,7 @@ def process(country):
     # df_country = df_country[['dateRep', 'cases', 'deaths']]
 
     # Make dateRep a Date field to sort it
-    df_country['date'] =pd.to_datetime(df_country.dateRep, format="%d/%m/%Y")
+    df_country['date'] = pd.to_datetime(df_country.dateRep, format="%d/%m/%Y")
     df_country = df_country.sort_values('date')
     # remove time
     df_country['date'] = df_country['date'].dt.date
@@ -120,36 +120,37 @@ if __name__ == "__main__":
     source_url = "https://opendata.ecdc.europa.eu/covid19/casedistribution/csv"
     df = pd.read_csv(source_url).dropna()
 
-
+    countries = df.countriesAndTerritories.unique()
  
     while True:
         print("\n\nCountry Graphic Evolution")
         print("=========================\n")
-        print("On affiche les données cumulées ? ([y]/n)")
 
-        f = input("Votre choix ==> ")
-        if f == "n":
-            flag = False
-        else:
-            flag = True
-        
-        print("1 - France")
-        print("2 - Canada")
-        print("3 - Italy")
-        print("\n0 - Quitter\n")
+        i = 0
+        for country in countries:
+            i += 1
+            print("{} - {}".format(i, country))
+
         n = -1
-
-        while(n<0 or n>3):
+        while(n<0 or n>len(countries)):
             n = int(input("Votre choix ==> "))
 
         if n == 0:
             break
-        elif n == 1:
-            country = "France"
-        elif n == 2:
-            country = "Canada"
-        elif n == 3:
-            country = "Italy"
+        else:
+            country = str(countries[n-1])
+
+        print("\nNous allons afficher le graphe pour '{}'".format(country))
+
+
+        print("\n\nOn affiche les données cumulées ? ([n]/y)")
+
+        f = input("Votre choix ==> ")
+        if f == "y":
+            flag = True
+        else:
+            flag = False
+
 
         display_plot(process(country), country ,flag)
 #        display_bar(process(country), country)
