@@ -31,6 +31,7 @@ def process(country):
 
     # Rolling mean
     df_country['rollingCases'] = df_country.cases.rolling(window=5,center=False).mean()
+    df_country['rollingDeaths'] = df_country.deaths.rolling(window=5,center=False).mean()
 
     return df_country
 
@@ -72,7 +73,7 @@ def display_scatter(df, country):
     plt.legend()
     plt.show()
 
-def display_plot(df, country):
+def display_plot(df, country, full):
 
     #    print(df)
 
@@ -85,11 +86,13 @@ def display_plot(df, country):
 
     plt.yticks(y_ticks)
     
-    plt.plot(x, df.cumCases, c = 'blue', label='Cumulated Cases')
+    if full:
+        plt.plot(x, df.cumCases, c = 'blue', label='Cumulated Cases')
+        plt.plot(x, df.cumDeaths, c = 'red', label='Cumulated Deaths')
     plt.plot(x, df.cases, c = 'green', label='Cases')
     plt.plot(x, df.rollingCases,":", c = 'green', label='Rolling Mean of Cases')
-    plt.plot(x, df.cumDeaths, c = 'red', label='Cumulated Deaths')
     plt.plot(x, df.deaths, c = 'orange', label='Deaths')
+    plt.plot(x, df.rollingDeaths,":", c = 'orange', label='Rolling Mean of Cases')
 
     # draw line of Max Cases
 #    x_cases = [df.date.min(), df.date.max()]
@@ -118,10 +121,18 @@ if __name__ == "__main__":
     df = pd.read_csv(source_url).dropna()
 
 
-    print("Country Graphic Evolution")
-    print("=========================\n")
-
+ 
     while True:
+        print("\n\nCountry Graphic Evolution")
+        print("=========================\n")
+        print("On affiche les données cumulées ? ([y]/n)")
+
+        f = input("Votre choix ==> ")
+        if f == "n":
+            flag = False
+        else:
+            flag = True
+        
         print("1 - France")
         print("2 - Canada")
         print("3 - Italy")
@@ -140,5 +151,5 @@ if __name__ == "__main__":
         elif n == 3:
             country = "Italy"
 
-        display_plot(process(country), country)
+        display_plot(process(country), country ,flag)
 #        display_bar(process(country), country)
