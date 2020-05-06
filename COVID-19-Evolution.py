@@ -27,11 +27,14 @@ def process(country):
     df_country['cumDeaths'] = df_country.deaths.cumsum()
 
     # Remove early values
-    df_country = df_country[df_country.cumCases > 1000]
-
+    if len(df_country) < 1000:
+        print("\nWARNING: Pas assez de cas pour {} ".format(country))
+    else:
+        df_country = df_country[df_country.cumCases > 1000]
+ 
     # Rolling mean
-    df_country['rollingCases'] = df_country.cases.rolling(window=5,center=False).mean()
-    df_country['rollingDeaths'] = df_country.deaths.rolling(window=5,center=False).mean()
+    df_country['rollingCases'] = df_country.cases.rolling(window=7,center=False).mean()
+    df_country['rollingDeaths'] = df_country.deaths.rolling(window=7,center=False).mean()
 
     return df_country
 
