@@ -27,7 +27,7 @@ def process(country):
     df_country['cumDeaths'] = df_country.deaths.cumsum()
 
     # Remove early values
-    if len(df_country) < 1000:
+    if len(df_country) < 100:
         print("\nWARNING: Pas assez de cas pour {} ".format(country))
     else:
         df_country = df_country[df_country.cumCases > 1000]
