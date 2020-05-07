@@ -136,7 +136,10 @@ if __name__ == "__main__":
 
         n = -1
         while(n<0 or n>len(countries)):
-            n = int(input("Votre choix ==> "))
+            try:
+                n = int(input("Votre choix ==> "))
+            except:
+                n = 0
 
         if n == 0:
             break
