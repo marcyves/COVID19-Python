@@ -27,12 +27,8 @@ def display_bar(df, country, full):
     autolabel(plt,rects3)
     autolabel(plt,rects4)
 
-    # Add some text for labels, title and custom x-axis tick labels, etc.
-#    plt.set_ylabel('Count')
-#    plt.set_title('Confirmed Cases and Deaths in {}'.format(country))
-    plt.xticks(x)
-#    plt.set_xticklabels(df.dateRep)
-#    fig.tight_layout()
+    # Add some text for custom x-axis tick labels.
+    plt.xticks(x, df.dateRep)
 
 def autolabel(ax,rects):
     """Attach a text label above each bar in *rects*, displaying its height."""
@@ -47,7 +43,7 @@ def autolabel(ax,rects):
 
 def display_scatter(df, country):
 
-    x = np.arange(len(df.dateRep))  # the label are dates
+    x = df.dateRep
 
     plt.scatter(x, df.cumCases, c = 'blue')
     plt.scatter(x, df.cases, c = 'green')
@@ -58,7 +54,6 @@ def display_scatter(df, country):
 def display_plot(df, country, full):
 
     x = df.dateRep
-    plt.xticks(rotation=80)
 
     y_ticks = np.arange(0, df.cumCases.max(), 5000)
 
@@ -174,7 +169,7 @@ class SourceCovid():
         elif self.plot_type == 5:
             display_scatter(result, self.country_selected)
 
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=80)
         plt.subplots_adjust(left=0.1, bottom=0.18, right=0.95, top=0.9)
         plt.grid(color='gainsboro', linestyle='dashed')
         plt.legend()
