@@ -13,37 +13,39 @@ import numpy as np
 
 
 def display_bar(df, country, full):
+
     x = np.arange(len(df.dateRep))  # the label are dates
     width = 0.5  # the width of the bars
 
-    fig, ax = plt.subplots(figsize=(10,12))
     if full:
-        rects1 = ax.bar(x - width/3, df.cumCases, width, label='Cas cumulés')
-        rects2 = ax.bar(x + width/3, df.cumDeaths, width, label='Décés cumulés')
-        autolabel(ax,rects1)
-        autolabel(ax,rects2)
-    rects3 = ax.bar(x - width/3, df.cases, width, label='Cas')
-    rects4 = ax.bar(x + width/3, df.deaths, width, label='Décés')
-    autolabel(ax,rects3)
-    autolabel(ax,rects4)
+        rects1 = plt.bar(x - width/3, df.cumCases, width, label='Cas cumulés')
+        rects2 = plt.bar(x + width/3, df.cumDeaths, width, label='Décés cumulés')
+        autolabel(plt,rects1)
+        autolabel(plt,rects2)
+    rects3 = plt.bar(x - width/3, df.cases, width, label='Cas')
+    rects4 = plt.bar(x + width/3, df.deaths, width, label='Décés')
+    autolabel(plt,rects3)
+    autolabel(plt,rects4)
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
-    ax.set_ylabel('Count')
-    ax.set_title('Confirmed Cases and Deaths in {}'.format(country))
-    ax.set_xticks(x)
-    ax.set_xticklabels(df.dateRep)
-    ax.legend()
+#    plt.set_ylabel('Count')
+#    plt.set_title('Confirmed Cases and Deaths in {}'.format(country))
+    plt.xticks(x)
+#    plt.set_xticklabels(df.dateRep)
+#    fig.tight_layout()
 
+def autolabel(ax,rects):
+    """Attach a text label above each bar in *rects*, displaying its height."""
+    for rect in rects:
+        height = rect.get_height()
+        ax.annotate('{}'.format(height),
+                    xy=(rect.get_x() + rect.get_width() / 2, height),
+                    xytext=(0, 3),  # 3 points vertical offset
+                    textcoords="offset points",
+                    ha='center', va='bottom')
 
-    fig.tight_layout()
-
-    plt.xticks(rotation=45)
-
-    plt.show()
 
 def display_scatter(df, country):
-
-    plt.title('Confirmed Cases and Deaths in {}'.format(country))
 
     x = np.arange(len(df.dateRep))  # the label are dates
 
@@ -52,14 +54,8 @@ def display_scatter(df, country):
     plt.scatter(x, df.cumDeaths, c = 'red')
     plt.scatter(x, df.deaths, c = 'orange')
 
-    plt.legend()
-    plt.show()
 
 def display_plot(df, country, full):
-
-    #    print(df)
-
-    plt.title('Confirmed Cases and Deaths in {}\nSource: {}'.format(country, source_url))
 
     x = df.dateRep
     plt.xticks(rotation=80)
@@ -81,22 +77,7 @@ def display_plot(df, country, full):
 #    y_cases = [df.cases.max(), df.cases.max()]
 #    plt.plot(x_cases, y_cases)
 
-    plt.subplots_adjust(left=0.1, bottom=0.18, right=0.95, top=0.9)
 
-    plt.legend()
-    plt.grid(color='gainsboro', linestyle='dashed')
-
-    plt.show()
-
-def autolabel(ax,rects):
-    """Attach a text label above each bar in *rects*, displaying its height."""
-    for rect in rects:
-        height = rect.get_height()
-        ax.annotate('{}'.format(height),
-                    xy=(rect.get_x() + rect.get_width() / 2, height),
-                    xytext=(0, 3),  # 3 points vertical offset
-                    textcoords="offset points",
-                    ha='center', va='bottom')
 
 class SourceCovid():
 
@@ -169,7 +150,7 @@ class SourceCovid():
         print("  5 - Nuages de points")
 
         n = 0
-        while(n<1 or n>4):
+        while(n<1 or n>5):
             try:
                 n = int(input("Votre choix ==> "))
             except:
@@ -179,6 +160,8 @@ class SourceCovid():
 
     def DisplayGraph(self):
         
+        plt.title('Confirmed Cases and Deaths in {}\nSource: {}'.format(self.country_selected, source_url))
+
         result = self.Process(self.country_selected)
         if self.plot_type == 1:
             display_plot(result, self.country_selected ,False)
@@ -190,6 +173,12 @@ class SourceCovid():
             display_bar(result, self.country_selected, True)
         elif self.plot_type == 5:
             display_scatter(result, self.country_selected)
+
+        plt.xticks(rotation=45)
+        plt.subplots_adjust(left=0.1, bottom=0.18, right=0.95, top=0.9)
+        plt.grid(color='gainsboro', linestyle='dashed')
+        plt.legend()
+        plt.show()
 
 
 if __name__ == "__main__":
