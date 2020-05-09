@@ -12,13 +12,20 @@ import numpy as np
 """
 
 
-def display_bar(df, country):
+def display_bar(df, country, full):
     x = np.arange(len(df.dateRep))  # the label are dates
     width = 0.5  # the width of the bars
 
     fig, ax = plt.subplots(figsize=(10,12))
-    rects1 = ax.bar(x - width/3, df.cumCases, width, label='Cases')
-    rects2 = ax.bar(x + width/3, df.cumDeaths, width, label='Deaths')
+    if full:
+        rects1 = ax.bar(x - width/3, df.cumCases, width, label='Cas cumulés')
+        rects2 = ax.bar(x + width/3, df.cumDeaths, width, label='Décés cumulés')
+        autolabel(ax,rects1)
+        autolabel(ax,rects2)
+    rects3 = ax.bar(x - width/3, df.cases, width, label='Cas')
+    rects4 = ax.bar(x + width/3, df.deaths, width, label='Décés')
+    autolabel(ax,rects3)
+    autolabel(ax,rects4)
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
     ax.set_ylabel('Count')
@@ -27,8 +34,6 @@ def display_bar(df, country):
     ax.set_xticklabels(df.dateRep)
     ax.legend()
 
-    autolabel(ax,rects1)
-    autolabel(ax,rects2)
 
     fig.tight_layout()
 
@@ -159,8 +164,9 @@ class SourceCovid():
         print("Type de graphique")
         print(" [1] - Courbes des données journalières")
         print("  2 - Courbes des données journalières et cumulées")
-        print("  3 - Histogramme")
-        print("  4 - Nuages de points")
+        print("  3 - Histogramme des données journalières")
+        print("  4 - Histogramme des données journalières et cumulées")
+        print("  5 - Nuages de points")
 
         n = 0
         while(n<1 or n>4):
@@ -179,8 +185,10 @@ class SourceCovid():
         elif self.plot_type == 2:
             display_plot(result, self.country_selected ,True)
         elif self.plot_type == 3:
-            display_bar(result, self.country_selected)
+            display_bar(result, self.country_selected, False)
         elif self.plot_type == 4:
+            display_bar(result, self.country_selected, True)
+        elif self.plot_type == 5:
             display_scatter(result, self.country_selected)
 
 
