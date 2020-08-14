@@ -135,7 +135,6 @@ class SourceCovid():
     def SelectGraph(self):
         print("\n\nOn affiche les données cumulées ? ([n]/y)")
 
-
         print("Type de graphique")
         print(" [1] - Courbes des données journalières")
         print("  2 - Courbes des données journalières et cumulées")
