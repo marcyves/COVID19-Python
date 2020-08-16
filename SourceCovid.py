@@ -62,10 +62,10 @@ def display_plot(df, country, full):
     if full:
         plt.plot(x, df.cumCases, c = 'blue', label='Cumulated Cases')
         plt.plot(x, df.cumDeaths, c = 'red', label='Cumulated Deaths')
-    plt.plot(x, df.cases, c = 'green', label='Cases')
-    plt.plot(x, df.rollingCases,":", c = 'green', label='Rolling Mean of Cases')
-    plt.plot(x, df.deaths, c = 'orange', label='Deaths')
-    plt.plot(x, df.rollingDeaths,":", c = 'orange', label='Rolling Mean of Cases')
+    plt.plot(x, df.cases, ":",c = 'green', label='Cases')
+    plt.plot(x, df.rollingCases, c = 'green', label='Rolling Mean of Cases')
+    plt.plot(x, df.deaths, ":",c = 'orange', label='Deaths')
+    plt.plot(x, df.rollingDeaths, c = 'orange', label='Rolling Mean of Cases')
 
     # draw line of Max Cases
 #    x_cases = [df.date.min(), df.date.max()]
