@@ -12,19 +12,21 @@ import numpy as np
 """
 
 
-def display_bar(df, country, full):
+def display_bar(df, country, full, only):
 
     x = np.arange(len(df.dateRep))  # the label are dates
     width = 0.5  # the width of the bars
 
     if full:
-        rects1 = plt.bar(x - width/3, df.cumCases, width, label='Cas cumulés')
+        if only:
+            rects1 = plt.bar(x - width/3, df.cumCases, width, label='Cas cumulés')
+            autolabel(plt,rects1)
         rects2 = plt.bar(x + width/3, df.cumDeaths, width, label='Décés cumulés')
-        autolabel(plt,rects1)
         autolabel(plt,rects2)
-    rects3 = plt.bar(x - width/3, df.cases, width, label='Cas')
+    if only:
+        rects3 = plt.bar(x - width/3, df.cases, width, label='Cas')
+        autolabel(plt,rects3)
     rects4 = plt.bar(x + width/3, df.deaths, width, label='Décés')
-    autolabel(plt,rects3)
     autolabel(plt,rects4)
 
     # Add some text for custom x-axis tick labels.
@@ -55,7 +57,7 @@ def display_plot(df, country, full):
 
     x = df.dateRep
 
-    y_ticks = np.arange(0, df.cumCases.max(), 5000)
+    y_ticks = np.arange(0, df.cumCases.max(), 1000)
 
     plt.yticks(y_ticks)
     
@@ -141,9 +143,10 @@ class SourceCovid():
         print("  3 - Histogramme des données journalières")
         print("  4 - Histogramme des données journalières et cumulées")
         print("  5 - Nuages de points")
+        print("  6 - Histogramme des décés journaliers")
 
         n = 0
-        while(n<1 or n>5):
+        while(n<1 or n>6):
             try:
                 n = int(input("Votre choix ==> "))
             except:
@@ -161,14 +164,16 @@ class SourceCovid():
         elif self.plot_type == 2:
             display_plot(result, self.country_selected ,True)
         elif self.plot_type == 3:
-            display_bar(result, self.country_selected, False)
+            display_bar(result, self.country_selected, False, True)
         elif self.plot_type == 4:
-            display_bar(result, self.country_selected, True)
+            display_bar(result, self.country_selected, True, True)
         elif self.plot_type == 5:
             display_scatter(result, self.country_selected)
+        elif self.plot_type == 6:
+            display_bar(result, self.country_selected, False, False)
 
         plt.xticks(rotation=80)
-        plt.subplots_adjust(left=0.1, bottom=0.18, right=0.95, top=0.9)
+        plt.subplots_adjust(left=0.03, bottom=0.18, right=0.95, top=0.9)
         plt.grid(color='gainsboro', linestyle='dashed')
         plt.legend()
         plt.show()
